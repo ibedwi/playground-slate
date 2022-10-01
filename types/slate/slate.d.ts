@@ -1,5 +1,5 @@
 // This example is for an Editor with `ReactEditor` and `HistoryEditor`
-import { BaseEditor } from 'slate'
+import { BaseEditor, BaseText } from 'slate'
 import { ReactEditor } from 'slate-react'
 import { HistoryEditor } from 'slate-history'
 
@@ -7,9 +7,9 @@ export type CustomEditor = BaseEditor & ReactEditor & HistoryEditor
 
 export type ParagraphElement = {
   type: 'paragraph',
-  isBold: boolean,
-  isItalic: boolean,
-  isUnderlined: boolean,
+  isBold?: boolean,
+  isItalic?: boolean,
+  isUnderlined?: boolean,
   children: CustomText[]
 }
 
@@ -21,7 +21,7 @@ export type HeadingElement = {
 
 export type CustomElement = ParagraphElement | HeadingElement
 
-export type FormattedText = { text: string; bold?: true }
+export type FormattedText = { text: string; bold?: true, italic?: true, underlined?: true }
 
 export type CustomText = FormattedText
 
@@ -29,6 +29,6 @@ declare module 'slate' {
   interface CustomTypes {
     Editor: CustomEditor
     Element: CustomElement
-    Text: CustomText
+    Text: FormattedText
   }
 }
