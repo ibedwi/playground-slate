@@ -1,6 +1,7 @@
 import { BaseEditor } from 'slate'
 import { ReactEditor } from 'slate-react'
 
+
 type TextFormat = "bold" | "italic" | "underlined";
 
 type CustomEditor = BaseEditor & ReactEditor
@@ -19,7 +20,14 @@ type HeadingElement = {
   children: CustomText[]
 }
 
-type CustomElement = ParagraphElement | HeadingElement
+type ButtonElement = {
+  type: 'button',
+  variant: 'solid' | 'ghost' | 'outline',
+  label: string,
+  children: CustomText[]
+}
+
+type CustomElement = ParagraphElement | HeadingElement | ButtonElement
 
 type FormattedText = { text: string; bold?: true, italic?: true, underlined?: true }
 

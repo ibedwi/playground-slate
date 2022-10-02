@@ -43,6 +43,7 @@ function BasicPage() {
             <Stack direction={"row"}>
               <AddElementButton element="heading" label="Add H1" />
               <AddElementButton element="paragraph" label="Add P" />
+              <AddElementButton element="button" label="Add Button" />
             </Stack>
           </Stack>
           <Stack borderTopWidth={1} borderBottomWidth={1} py={3}>

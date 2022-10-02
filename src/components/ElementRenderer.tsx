@@ -1,4 +1,4 @@
-import { Heading, Text } from "@chakra-ui/react"
+import { Button, Heading, Text } from "@chakra-ui/react"
 import { RenderElementProps } from "slate-react"
 
 const ElementRenderer = ({ attributes, children, element }: RenderElementProps) => {
@@ -14,6 +14,9 @@ const ElementRenderer = ({ attributes, children, element }: RenderElementProps) 
         return <Heading as="h2" fontSize={"3xl"}>{children}</Heading>
       }
       return <Text>{children}</Text>
+    }
+    case 'button': {
+      return <Button variant={element.variant}>{children}</Button>
     }
     default:
       return <Text as="p" {...attributes}>{children}</Text>

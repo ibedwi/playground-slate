@@ -23,6 +23,15 @@ const AddElementButton = (props: AddElementButtonProps) => {
         )
       }
 
+      case 'button': {
+        return {
+          type: 'button',
+          variant: 'solid',
+          label: 'New Button',
+          children: [{ text: "test" }]
+        }
+      }
+
       case 'paragraph':
       default:
         return (
