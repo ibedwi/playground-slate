@@ -3,46 +3,24 @@ import { RenderElementProps, useSelected } from "slate-react"
 
 const ElementRenderer = ({ attributes, children, element }: RenderElementProps) => {
   const selected = useSelected();
+
   switch (element.type) {
     case 'paragraph': {
-      const resolveAlignment = () => {
-        switch (element.container?.align) {
-          case 'middle': {
-            return "center"
-          }
-          case "right": {
-            return "end"
-          }
-          default:
-            return "start"
-        }
-      }
-      return <Stack
-        borderWidth={1}
-        padding={2}
-        borderColor={selected ? "blue.400" : "white"}
-        _hover={{ borderColor: "blue.200" }}
-        justifyContent={resolveAlignment()}
-      ><Text as="p">{children}</Text></Stack>
+      return <Text as="p" {...attributes}>{children}</Text>
     }
+
     case 'heading': {
       if (element.level === 1) {
-        return <Heading as="h1" fontSize="4xl">{children}</Heading>
+        return <Heading as="h1" fontSize="4xl" {...attributes}>{children}</Heading>
       }
       if (element.level === 2) {
-        return <Heading as="h2" fontSize={"3xl"}>{children}</Heading>
+        return <Heading as="h2" fontSize={"3xl"} {...attributes}>{children}</Heading>
       }
-      return <Text>{children}</Text>
+      return <Text {...attributes}>{children}</Text>
     }
+
     case 'button': {
-      return <Stack
-        borderWidth={1}
-        padding={2}
-        borderColor={selected ? "blue.400" : "white"}
-        _hover={{ borderColor: "blue.200" }}
-      >
-        <Button variant={element.variant}>{children}</Button>
-      </Stack>
+      return <Button variant={element.variant} {...attributes}>{children}</Button>
     }
     case 'stack': {
       return (
