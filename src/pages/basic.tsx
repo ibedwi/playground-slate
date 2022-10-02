@@ -1,9 +1,10 @@
-import { Container, Heading, Stack, Text } from "@chakra-ui/react";
+import { Button, Container, Heading, Stack, Text } from "@chakra-ui/react";
 import { ElementRenderer } from "@components/ElementRenderer";
 import { LeafRenderer } from "@components/LeafRenderer";
 import { TextFormattingButton } from "@components/TextFormattingButton";
+import { CustomElement } from "@modules/slate/slateEntity";
 import { useCallback, useState } from "react";
-import { createEditor, Descendant } from "slate";
+import { createEditor, Descendant, Transforms } from "slate";
 import { Slate, Editable, withReact, RenderElementProps, RenderLeafProps, useSlate, useFocused, useSlateSelection } from "slate-react";
 
 // Add the initial value.
@@ -24,6 +25,21 @@ const initialValue: Descendant[] = [
   },
 ];
 
+const AddElementButton = () => {
+  const editor = useSlate();
+  const H1Element: CustomElement = {
+    type: 'heading',
+    level: 1,
+    children: [{ text: "New H1" }]
+  }
+  const addElement = () => {
+    Transforms.insertNodes(editor, H1Element)
+  }
+
+  return (
+    <Button onClick={addElement}>Add H1</Button>
+  )
+}
 
 function BasicPage() {
   const [editor] = useState(() => withReact(createEditor()));
@@ -36,6 +52,12 @@ function BasicPage() {
       <Slate editor={editor} value={initialValue}>
         <Stack >
           <Heading>Rich but not so rich editor</Heading>
+          <Stack borderTopWidth={1} borderBottomWidth={1} py={3}>
+            <Text>Element Toolbar</Text>
+            <Stack direction={"row"}>
+              <AddElementButton />
+            </Stack>
+          </Stack>
           <Stack borderTopWidth={1} borderBottomWidth={1} py={3}>
             <Text>Text Format</Text>
             <Stack direction={"row"}>
