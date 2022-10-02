@@ -1,8 +1,7 @@
-import { Button, Container, Heading, Stack, Text } from "@chakra-ui/react";
+import { Container, Heading, Stack, Text } from "@chakra-ui/react";
 import { ElementRenderer } from "@components/ElementRenderer";
 import { LeafRenderer } from "@components/LeafRenderer";
-import { TextFormat } from "@modules/slate/slateEntity";
-import { isMarkActive, toggleMark } from "@utils/slate.utils";
+import { TextFormattingButton } from "@components/TextFormattingButton";
 import { useCallback, useState } from "react";
 import { createEditor, Descendant } from "slate";
 import { Slate, Editable, withReact, RenderElementProps, RenderLeafProps, useSlate, useFocused, useSlateSelection } from "slate-react";
@@ -40,9 +39,9 @@ function BasicPage() {
           <Stack borderTopWidth={1} borderBottomWidth={1} py={3}>
             <Text>Text Format</Text>
             <Stack direction={"row"}>
-              <ToolbarButton format="bold" />
-              <ToolbarButton format="underlined" />
-              <ToolbarButton format="italic" />
+              <TextFormattingButton format="bold" />
+              <TextFormattingButton format="underlined" />
+              <TextFormattingButton format="italic" />
             </Stack>
           </Stack>
 
@@ -57,22 +56,6 @@ function BasicPage() {
       </Slate>
     </Container >
   );
-}
-
-
-const ToolbarButton = (props: { format: TextFormat }) => {
-  const editor = useSlate()
-
-
-  return (
-    <Button
-      size={"sm"}
-      onClick={() => toggleMark(editor, props.format)}
-      colorScheme={
-        isMarkActive(editor, props.format) ? "blue" : "gray"
-      }
-    >{props.format}</Button>
-  )
 }
 
 // Use this to view the editor focused and selected state
