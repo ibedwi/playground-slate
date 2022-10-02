@@ -1,9 +1,11 @@
+import { Button, Container, Heading, Stack, Text } from "@chakra-ui/react";
+import { ElementRenderer } from "@components/ElementRenderer";
+import { LeafRenderer } from "@components/LeafRenderer";
+import { TextFormat } from "@modules/slate/slateEntity";
+import { isMarkActive, toggleMark } from "@utils/slate.utils";
 import { useCallback, useState } from "react";
-import { createEditor, Descendant, Element, Editor } from "slate";
-import { Slate, Editable, withReact, RenderElementProps, RenderLeafProps, useSlate, useFocused, useSelected, useSlateSelection } from "slate-react";
-
-type CustomElementType = "paragraph" | "spacer"
-
+import { createEditor, Descendant } from "slate";
+import { Slate, Editable, withReact, RenderElementProps, RenderLeafProps, useSlate, useFocused, useSlateSelection } from "slate-react";
 
 // Add the initial value.
 const initialValue: Descendant[] = [
@@ -27,99 +29,53 @@ const initialValue: Descendant[] = [
 function BasicPage() {
   const [editor] = useState(() => withReact(createEditor()));
 
-  // function to render element based on its props and types
-  // const renderElement = useCallback(props => <Element {...props} />, [])
-  const renderElement = useCallback(({ attributes, children, element }: RenderElementProps) => {
-    switch (element.type) {
-      case 'paragraph': {
-        console.log("parapgraph children", children)
-        return <p>{children}</p>
-      }
-      case 'heading': {
-        if (element.level === 1) {
-          return <h1>{children}</h1>
-        }
-        if (element.level === 2) {
-          return <h2>{children}</h2>
-        }
-        return <p>{children}</p>
-      }
-      default:
-        return <p {...attributes}>{children}</p>
-    }
-  }, [])
-
-  const renderLeaf = useCallback(({ attributes, children, leaf }: RenderLeafProps) => {
-    if (leaf.bold) {
-      children = <strong>{children}</strong>
-    }
-
-    if (leaf.italic) {
-      children = <em>{children}</em>
-    }
-
-    if (leaf.underlined) {
-      children = <u>{children}</u>
-    }
-
-    return <span {...attributes}>{children}</span>
-  }, [])
-
-  const isMarkActive = (editor: Editor, format: "bold" | "italic" | "underlined") => {
-    const marks = Editor.marks(editor)
-    return marks ? marks[format] === true : false
-  }
-
-  const toggleMark = ((editor: Editor, format: "bold" | "italic" | "underlined") => {
-    const isActive = isMarkActive(editor, format)
-    if (isActive) {
-      Editor.removeMark(editor, format)
-    } else {
-      Editor.addMark(editor, format, true)
-    }
-  })
+  const renderElement = useCallback((props: RenderElementProps) => <ElementRenderer {...props} />, [])
+  const renderLeaf = useCallback((props: RenderLeafProps) => <LeafRenderer {...props} />, [])
 
   return (
-    <div>
-      <p>Editor: </p>
-      <p>{JSON.stringify(Editor.marks(editor), undefined, 2)}</p>
-      <div>
-        <button onClick={() => toggleMark(editor, "bold")}>bold ({isMarkActive(editor, "bold") ? "active" : "inactive"})</button>
-        <button>italic</button>
-      </div>
+    <Container pt={4}>
       <Slate editor={editor} value={initialValue}>
-        <ToolbarButton />
-        <FocusedBar />
-        <Editable
-          renderLeaf={renderLeaf}
-          renderElement={renderElement}
-        />
+        <Stack >
+          <Heading>Rich but not so rich editor</Heading>
+          <Stack borderTopWidth={1} borderBottomWidth={1} py={3}>
+            <Text>Text Format</Text>
+            <Stack direction={"row"}>
+              <ToolbarButton format="bold" />
+              <ToolbarButton format="underlined" />
+              <ToolbarButton format="italic" />
+            </Stack>
+          </Stack>
+
+          {/* <FocusedBar /> */}
+          <Stack borderWidth={1} borderRadius="lg" borderColor="gray.200" p={4}>
+            <Editable
+              renderLeaf={renderLeaf}
+              renderElement={renderElement}
+            />
+          </Stack>
+        </Stack>
       </Slate>
-    </div>
+    </Container >
   );
 }
 
-const ToolbarButton = () => {
+
+const ToolbarButton = (props: { format: TextFormat }) => {
   const editor = useSlate()
 
-  const isMarkActive = (editor: Editor, format: "bold" | "italic" | "underlined") => {
-    const marks = Editor.marks(editor)
-    return marks ? marks[format] === true : false
-  }
 
-  const toggleMark = ((editor: Editor, format: "bold" | "italic" | "underlined") => {
-    const isActive = isMarkActive(editor, format)
-    if (isActive) {
-      Editor.removeMark(editor, format)
-    } else {
-      Editor.addMark(editor, format, true)
-    }
-  })
   return (
-    <button onClick={() => toggleMark(editor, "bold")}>bold ({isMarkActive(editor, "bold") ? "active" : "inactive"})</button>
+    <Button
+      size={"sm"}
+      onClick={() => toggleMark(editor, props.format)}
+      colorScheme={
+        isMarkActive(editor, props.format) ? "blue" : "gray"
+      }
+    >{props.format}</Button>
   )
 }
 
+// Use this to view the editor focused and selected state
 const FocusedBar = () => {
   const focused = useFocused();
   const selected = useSlateSelection()
