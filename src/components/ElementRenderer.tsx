@@ -1,10 +1,29 @@
-import { Button, Heading, Text } from "@chakra-ui/react"
-import { RenderElementProps } from "slate-react"
+import { Button, Heading, Stack, Text } from "@chakra-ui/react"
+import { RenderElementProps, useSelected } from "slate-react"
 
 const ElementRenderer = ({ attributes, children, element }: RenderElementProps) => {
+  const selected = useSelected();
   switch (element.type) {
     case 'paragraph': {
-      return <p>{children}</p>
+      const resolveAlignment = () => {
+        switch (element.container?.align) {
+          case 'middle': {
+            return "center"
+          }
+          case "right": {
+            return "end"
+          }
+          default:
+            return "start"
+        }
+      }
+      return <Stack
+        borderWidth={1}
+        padding={2}
+        borderColor={selected ? "blue.400" : "white"}
+        _hover={{ borderColor: "blue.200" }}
+        justifyContent={resolveAlignment()}
+      ><Text as="p">{children}</Text></Stack>
     }
     case 'heading': {
       if (element.level === 1) {
@@ -16,7 +35,26 @@ const ElementRenderer = ({ attributes, children, element }: RenderElementProps) 
       return <Text>{children}</Text>
     }
     case 'button': {
-      return <Button variant={element.variant}>{children}</Button>
+      return <Stack
+        borderWidth={1}
+        padding={2}
+        borderColor={selected ? "blue.400" : "white"}
+        _hover={{ borderColor: "blue.200" }}
+      >
+        <Button variant={element.variant}>{children}</Button>
+      </Stack>
+    }
+    case 'stack': {
+      return (
+        <Stack
+          borderWidth={1}
+          padding={2}
+          borderColor={selected ? "blue.400" : "white"}
+          _hover={{ borderColor: "blue.200" }}
+        >
+          {children}
+        </Stack>
+      )
     }
     default:
       return <Text as="p" {...attributes}>{children}</Text>

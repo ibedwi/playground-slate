@@ -28,18 +28,16 @@ const AddElementButton = (props: AddElementButtonProps) => {
           type: 'button',
           variant: 'solid',
           label: 'New Button',
-          children: [{ text: "test" }]
+          children: [{ text: "Button Label" }]
         }
       }
 
       case 'paragraph':
       default:
-        return (
-          {
-            type: 'paragraph',
-            children: [{ text: "New Paragraph" }]
-          }
-        )
+        return ({
+          type: 'paragraph',
+          children: [{ text: "New Paragraph" }]
+        })
     }
   }
 

@@ -4,6 +4,10 @@ import { ReactEditor } from 'slate-react'
 
 type TextFormat = "bold" | "italic" | "underlined";
 
+type FormattedText = { text: string; bold?: true, italic?: true, underlined?: true }
+
+type CustomText = FormattedText
+
 type CustomEditor = BaseEditor & ReactEditor
 
 type ParagraphElement = {
@@ -11,6 +15,9 @@ type ParagraphElement = {
   isBold?: boolean,
   isItalic?: boolean,
   isUnderlined?: boolean,
+  container?: {
+    align: "left" | "right" | "middle"
+  }
   children: CustomText[]
 }
 
@@ -27,11 +34,12 @@ type ButtonElement = {
   children: CustomText[]
 }
 
-type CustomElement = ParagraphElement | HeadingElement | ButtonElement
+type StackElement = {
+  type: 'stack',
+  children: Array<CustomText | CustomElement>
+}
 
-type FormattedText = { text: string; bold?: true, italic?: true, underlined?: true }
-
-type CustomText = FormattedText
+type CustomElement = ParagraphElement | HeadingElement | ButtonElement | StackElement
 
 
 export type { TextFormat, CustomElement, FormattedText, CustomText, CustomEditor, ParagraphElement, HeadingElement }
