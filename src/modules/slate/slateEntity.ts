@@ -1,11 +1,11 @@
-import { BaseEditor, BaseText } from 'slate'
+import { BaseEditor } from 'slate'
 import { ReactEditor } from 'slate-react'
 
 type TextFormat = "bold" | "italic" | "underlined";
 
-export type CustomEditor = BaseEditor & ReactEditor & HistoryEditor
+type CustomEditor = BaseEditor & ReactEditor
 
-export type ParagraphElement = {
+type ParagraphElement = {
   type: 'paragraph',
   isBold?: boolean,
   isItalic?: boolean,
@@ -13,17 +13,17 @@ export type ParagraphElement = {
   children: CustomText[]
 }
 
-export type HeadingElement = {
+type HeadingElement = {
   type: 'heading'
   level: number
   children: CustomText[]
 }
 
-export type CustomElement = ParagraphElement | HeadingElement
+type CustomElement = ParagraphElement | HeadingElement
 
-export type FormattedText = { text: string; bold?: true, italic?: true, underlined?: true }
+type FormattedText = { text: string; bold?: true, italic?: true, underlined?: true }
 
-export type CustomText = FormattedText
+type CustomText = FormattedText
 
 
-export type { TextFormat }
+export type { TextFormat, CustomElement, FormattedText, CustomText, CustomEditor, ParagraphElement, HeadingElement }

@@ -1,4 +1,5 @@
 import { Button, Container, Heading, Stack, Text } from "@chakra-ui/react";
+import { AddElementButton } from "@components/AddElementButton";
 import { ElementRenderer } from "@components/ElementRenderer";
 import { LeafRenderer } from "@components/LeafRenderer";
 import { TextFormattingButton } from "@components/TextFormattingButton";
@@ -25,21 +26,6 @@ const initialValue: Descendant[] = [
   },
 ];
 
-const AddElementButton = () => {
-  const editor = useSlate();
-  const H1Element: CustomElement = {
-    type: 'heading',
-    level: 1,
-    children: [{ text: "New H1" }]
-  }
-  const addElement = () => {
-    Transforms.insertNodes(editor, H1Element)
-  }
-
-  return (
-    <Button onClick={addElement}>Add H1</Button>
-  )
-}
 
 function BasicPage() {
   const [editor] = useState(() => withReact(createEditor()));
@@ -55,7 +41,8 @@ function BasicPage() {
           <Stack borderTopWidth={1} borderBottomWidth={1} py={3}>
             <Text>Element Toolbar</Text>
             <Stack direction={"row"}>
-              <AddElementButton />
+              <AddElementButton element="heading" label="Add H1" />
+              <AddElementButton element="paragraph" label="Add P" />
             </Stack>
           </Stack>
           <Stack borderTopWidth={1} borderBottomWidth={1} py={3}>
