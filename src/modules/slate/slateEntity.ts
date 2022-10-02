@@ -42,4 +42,4 @@ type StackElement = {
 type CustomElement = ParagraphElement | HeadingElement | ButtonElement | StackElement
 
 
-export type { TextFormat, CustomElement, FormattedText, CustomText, CustomEditor, ParagraphElement, HeadingElement }
+export type { TextFormat, CustomElement, FormattedText, CustomText, CustomEditor, ParagraphElement, HeadingElement, ButtonElement }
